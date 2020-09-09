@@ -1,1 +1,23 @@
 //Master -> alle Standartwerte usw werden hier eingetragen
+
+/*
+    Color Codes for website; Variable name describing default usage
+*/
+$primaryColor: "tobeadded";
+$secondaryColor: "tobeadded";
+
+/*
+    Breakpoints for responsive design (already string for mediaquery)
+*/
+$bp-extra-small-devices: "min-width: 320px";
+$bp-small-devices: "min-width: 576px";
+$bp-medium-devices: "min-width: 768px";
+$bp-large-devices: "min-width: 992px";
+$bp-extra-large-devices: "min-width: 1200px";
+
+
+/*
+    Including other scss files to be shown here when getting compiled to css
+*/
+@import "./parts/_footer";
+@import "./parts/_header";
