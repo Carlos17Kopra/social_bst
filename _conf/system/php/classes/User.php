@@ -1,7 +1,7 @@
 <?php
 require "../../../config.php";
-
-class User
+require "Models/A_Model.php";
+class User extends A_Model
 {
 
     private $userID;
@@ -50,6 +50,19 @@ class User
             return false;
         }
 
+    }
+
+    //Methode zum löschen eines Users
+    static function delete($userID = "")
+    {
+        //ist eine UserID angegeben -> ja returne das Statement, nein returne false
+        if($userID !== ""){
+
+            return Config::getConfig()->getConnection()->prepareStatement("DELETE FROM `user` WHERE userID=?", [$userID]);
+
+        }else{
+            return false;
+        }
     }
 
     //User von dem Namen getten

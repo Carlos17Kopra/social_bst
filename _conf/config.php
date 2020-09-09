@@ -48,3 +48,6 @@ class Config{
 
 
 }
+
+//sofortiger Sessionstart
+session_start();

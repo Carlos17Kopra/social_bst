@@ -1,5 +1,7 @@
 <?php
-require "../_conf/config.php";
+//header implementieren (+ Config)
+require "templates/header.php";
+
 
 /*
 Config::getConfig()->getConnection()->createTable(
