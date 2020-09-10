@@ -3,8 +3,8 @@
 /*
     Color Codes for website; Variable name describing default usage
 */
-$primaryColor: "tobeadded";
-$secondaryColor: "tobeadded";
+$primaryColor: #6F58C9;
+$secondaryColor: #B6B8D6;
 
 /*
     Breakpoints for responsive design (already string for mediaquery)
@@ -18,15 +18,17 @@ $bp-extra-large-devices: "min-width: 1200px";
 /*
   Some main Styling for every Page
 */
-*{
+* {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
   box-sizing: border-box;
 }
-body{
+
+body {
   overflow-x: hidden;
 }
+
 /*
     Including other scss files to be shown here when getting compiled to css
 */
