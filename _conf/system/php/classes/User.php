@@ -34,6 +34,25 @@ class User extends A_Model
         }
     }
 
+    //Tabellen erstellen
+    public static function init(){
+        Config::getConfig()->getConnection()->createTable(
+            "user",
+            [
+                ["userID", "INT(11)", "AUTO_INCREMENT", "PRIMARY KEY", "NOT NULL"],
+                ["userName", "VARCHAR(200)", "NOT NULL"],
+                ["userPassword", "TEXT", "NOT NULL"],
+                ["userEmail", "VARCHAR(200)", "NOT NULL"],
+                ["userAge", "VARCHAR(200)", "NOT NULL"], // noch unklar
+                ["userProfilePicture", "TEXT", "NOT NULL"],
+                ["userStatus", "TEXT", "NOT NULL"],
+                ["userClass", "VARCHAR(200)", "NOT NULL"], // noch unklar
+                ["userRankID", "INT(11)", "NOT NULL"],
+                ["userFriends", "TEXT", "NOT NULL"] // noch unklar
+            ]
+        );
+    }
+
     //beim Registrieren verwendete Mehtode
     static function create($userName = "",$userPassword = "", $userEmail = "", $userAge = "", $userProfilePicture = "", $userStatus = "", $userClass = "", $userRankID = 0, $userFriends = []){
 
@@ -43,7 +62,7 @@ class User extends A_Model
             //SQLStatement und values vorbereiten
             $sql = "INSERT INTO `user` (userName, userPassword, userEmail, userAge, userProfilePicture, userStatus, userClass, userRankID, userFriends)
                                 VALUES(?,?,?,?,?,?,?,?,?)";
-            $vals = [$userName, $userPassword, $userEmail, $userAge, $userProfilePicture, $userStatus, $userClass, $userRankID, $userFriends];
+            $vals = [$userName, PasswordHash::hashPassword($userPassword), $userEmail, $userAge, $userProfilePicture, $userStatus, $userClass, $userRankID, $userFriends];
             return Config::getConfig()->getConnection()->prepareStatement($sql, $vals);
 
         }else{
@@ -207,7 +226,7 @@ class User extends A_Model
     //normale Setter
 
     /**
-     * @param mixed $friends
+     * @param User $friend
      */
     public function addFriend(User $friend)
     {
@@ -272,9 +291,7 @@ class User extends A_Model
 
     /**
      * @param mixed $userProfilePicture
-     * @TODO
-     *  - move_file direkt hier integrieren
-     */
+     * */
     public function setUserProfilePicture($userProfilePicture)
     {
         $this->userProfilePicture = $userProfilePicture;
@@ -307,7 +324,15 @@ class User extends A_Model
      */
     public function setUserPassword($userPassword)
     {
-        $this->userPassword = $userPassword;
+        $this->userPassword = PasswordHash::hashPassword($userPassword);
+    }
+
+    /**
+     * @param $givenPW
+     * @return bool
+     */
+    public function isUserPassword($givenPW){
+        return PasswordHash::checkPassword($givenPW, $this);
     }
 
 }
