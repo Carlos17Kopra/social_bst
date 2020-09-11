@@ -12,3 +12,5 @@ Config::getConfig()->getConnection()->createTable(
     ]
 );
 */
+
+require "templates/footer.php";
