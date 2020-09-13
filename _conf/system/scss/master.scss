@@ -3,17 +3,17 @@
 /*
     Color Codes for website; Variable name describing default usage
 */
-$primaryColor: #6F58C9;
-$secondaryColor: #B6B8D6;
+$primaryColor: #0562a7;
+$secondaryColor: #b6b8d6;
 
 /*
     Breakpoints for responsive design (already string for mediaquery)
 */
-$bp-extra-small-devices: "min-width: 320px";
-$bp-small-devices: "min-width: 576px";
-$bp-medium-devices: "min-width: 768px";
-$bp-large-devices: "min-width: 992px";
-$bp-extra-large-devices: "min-width: 1200px";
+$bp-extra-small-devices: "max-width: 320px";
+$bp-small-devices: "max-width: 576px";
+$bp-medium-devices: "max-width: 768px";
+$bp-large-devices: "max-width: 992px";
+$bp-extra-large-devices: "max-width: 1200px";
 
 /*
   Some main Styling for every Page
