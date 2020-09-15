@@ -13,4 +13,8 @@ Config::getConfig()->getConnection()->createTable(
 );
 */
 
+for($i=0;$i<100;$i++){
+    echo "<br>";
+}
+
 require "templates/footer.php";

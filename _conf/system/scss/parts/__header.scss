@@ -5,6 +5,44 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+.search{
+  position: relative;
+  background-color: #333;
+  width: 100%;
+  text-align: center;
+  transform-origin: top;
+  overflow: hidden;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  form {
+    position: relative;
+    width: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    input[type="text"]{
+      display: inline-block;
+      position: relative;
+      height: 100%;
+      width: 90%;
+      border: none;
+      outline: none;
+      font-size: 20px;
+      padding: 2px;
+    }
+    i{
+      float: right;
+      font-size: 30px;
+    }
+  }
+}
 nav {
   display: flex;
   height: 70px;
@@ -14,11 +52,11 @@ nav {
   justify-content: space-between;
   padding: 0 50px 0 100px;
   flex-wrap: wrap;
-
   .logo {
     color: #fff;
     font-size: 35px;
     font-weight: 600;
+    cursor: pointer;
   }
 
   ul{
@@ -28,6 +66,17 @@ nav {
 
     li{
       margin: 0 5px;
+
+      i{
+        color: #f2f2f2;
+        font-size: 30px;
+        cursor: pointer;
+        position: relative;
+        transition: .2s;
+        &.open{
+          transform: rotate(180deg);
+        }
+      }
 
       a{
         color: #f2f2f2;
@@ -63,7 +112,11 @@ nav {
     display: none;
   }
 }
-
+@media ($bp-small-devices) {
+  .search, #search_open_btn{
+    display: none !important;
+  }
+}
 @media (max-width: 1000px){
   nav{
     padding: 0 40px 0 50px;
@@ -73,12 +126,21 @@ nav {
   nav .menu-btn i{
     display: block;
   }
+  .search{
+    position: fixed;
+    top: 100%;
+    transform: translateY(-100%);
+    z-index: 2;
+  }
   #click:checked ~ .menu-btn i:before{
     content: "\f00d";
   }
+  nav{
+    position: fixed;
+  }
   nav ul{
     position: fixed;
-    top: 80px;
+    top: 70px;
     left: -100%;
     background: $primaryColor;
     height: 100vh;
