@@ -1,5 +1,5 @@
 <?php
-require "../../../config.php";
+
 require "Models/A_Model.php";
 class User extends A_Model
 {
@@ -43,18 +43,18 @@ class User extends A_Model
                 ["userName", "VARCHAR(200)", "NOT NULL"],
                 ["userPassword", "TEXT", "NOT NULL"],
                 ["userEmail", "VARCHAR(200)", "NOT NULL"],
-                ["userAge", "VARCHAR(200)", "NOT NULL"], // noch unklar
+                ["userAge", "DATE", "NOT NULL"],
                 ["userProfilePicture", "TEXT", "NOT NULL"],
                 ["userStatus", "TEXT", "NOT NULL"],
                 ["userClass", "VARCHAR(200)", "NOT NULL"], // noch unklar
                 ["userRankID", "INT(11)", "NOT NULL"],
-                ["userFriends", "TEXT", "NOT NULL"] // noch unklar
+                ["userFriends", "LONGTEXT", "NOT NULL"] // noch unklar
             ]
         );
     }
 
     //beim Registrieren verwendete Mehtode
-    static function create($userName = "",$userPassword = "", $userEmail = "", $userAge = "", $userProfilePicture = "", $userStatus = "", $userClass = "", $userRankID = 0, $userFriends = []){
+    static function create($userName = "",$userPassword = "", $userEmail = "", $userAge = "", $userProfilePicture = "../../_conf/system/data/user/profilepictures/demo.jpg", $userStatus = "Hallo, ich habe hier einen Account!", $userClass = "", $userRankID = 0, $userFriends = "[]"){
 
         //ist der Name schon vergeben? (Sicherheitsabfrage -> Errorhandling in dem RegisterScreen)
         if(!User::existsFromName($userName)){
@@ -100,6 +100,22 @@ class User extends A_Model
 
     }
 
+    //User von dem Email getten
+    static function fromMail($userMail){
+
+        //Callback der Database holen und falls es existiert einen User returnen, falls nicht einfach false
+        $res = Config::getConfig()->getConnection()->getSQLData("SELECT * FROM `user` WHERE userEmail=?", [$userMail]);
+        if($res->rowCount() > 0){
+
+            $id = $res->fetch()['userID'];
+            return new User($id);
+
+        }else{
+            return false;
+        }
+
+    }
+
     //Alle User getten
     static function getAll(){
 
@@ -122,6 +138,16 @@ class User extends A_Model
         $users = User::getAll();
         foreach ($users as $user){
             if($user->getUserName() === $name){
+                return true;
+            }
+        }
+        return false;
+    }
+    //Abfrage onb der User anhand der Email schon existiert
+    static function existsFromEmail($mail){
+        $users = User::getAll();
+        foreach ($users as $user){
+            if($user->getUserEmail() === $mail){
                 return true;
             }
         }

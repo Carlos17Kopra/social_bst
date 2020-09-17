@@ -25,9 +25,15 @@ require "../_conf/config.php";
         <i class="fas fa-bars"></i>
       </label>
       <ul>
-<li><a href="#">Home</a></li>
+<li><a href="index.php">Home</a></li>
 <li><a href="#">Posts</a></li>
-<li><a href="#">Account</a></li>
+          <?php
+            if(isset($_SESSION[Config::session_id])){
+                echo "<li><a href='account.php'>Account</a></li>";
+            }else{
+                echo "<li><a href='login.php'>Account</a></li>";
+            }
+          ?>
 <li><i id="search_open_btn" class="fas fa-chevron-down"></i></li>
 </ul>
 </nav>
@@ -38,4 +44,5 @@ require "../_conf/config.php";
         <label for="searchSub"><i class="fas fa-search"></i></label>
     </form>
 </div>
+<div class="background-image"></div>
 

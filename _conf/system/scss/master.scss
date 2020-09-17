@@ -28,9 +28,52 @@ $bp-extra-large-devices: "max-width: 1200px";
 body {
   overflow-x: hidden;
 }
+main{
+  padding: 20px;
+  margin: 20px 0;
+  h1{
+    text-align: center;
+  }
+  hr{
+    margin: 20px 0;
+  }
+}
+
+info{
+  display: block;
+  background: #fdfdfd;
+  color: green;
+  padding: 20px;
+  border-radius: 15px;
+  font-size: 18px;
+  -webkit-box-shadow: inset 0px 0px 45px -33px rgba(0,0,0,0.75);
+  -moz-box-shadow: inset 0px 0px 45px -33px rgba(0,0,0,0.75);
+  box-shadow: inset 0px 0px 45px -33px rgba(0,0,0,0.75);
+  position: relative;
+  width: 500px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+error{
+  display: block;
+  background: #fdfdfd;
+  color: red;
+  padding: 20px;
+  border-radius: 15px;
+  font-size: 18px;
+  -webkit-box-shadow: inset 0px 0px 45px -33px rgba(0,0,0,0.75);
+  -moz-box-shadow: inset 0px 0px 45px -33px rgba(0,0,0,0.75);
+  box-shadow: inset 0px 0px 45px -33px rgba(0,0,0,0.75);
+  position: relative;
+  width: 500px;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
 /*
     Including other scss files to be shown here when getting compiled to css
 */
 @import "./parts/_footer";
 @import "./parts/_header";
+@import "./parts/_login";
+@import "./parts/_animations";

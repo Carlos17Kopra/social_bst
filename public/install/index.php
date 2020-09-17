@@ -30,7 +30,7 @@ if(isset($_POST['InstallSubmit'])){
         "0",
         "NONE"
     );
-    unlink("index.php");
+    //unlink("index.php");
 
 }
 

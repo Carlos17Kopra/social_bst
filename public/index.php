@@ -1,5 +1,5 @@
 <?php
-//header implementieren (+ Config)
+
 require "templates/header.php";
 
 

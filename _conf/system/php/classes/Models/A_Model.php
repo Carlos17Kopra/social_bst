@@ -1,6 +1,4 @@
 <?php
-require "../../../../config.php";
-
 abstract class A_Model
 {
 

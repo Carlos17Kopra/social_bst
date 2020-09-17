@@ -112,6 +112,17 @@ nav {
     display: none;
   }
 }
+.background-image{
+
+  position: relative;
+  height: 500px;
+  width: 100%;
+  background-image: url("../data/bgimage.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
 @media ($bp-small-devices) {
   .search, #search_open_btn{
     display: none !important;
