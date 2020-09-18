@@ -16,6 +16,12 @@ $bp-large-devices: "max-width: 992px";
 $bp-extra-large-devices: "max-width: 1200px";
 
 /*
+  Data for custom ScrollBar
+*/
+$scrollbarBG: #CFD8DC;
+$thumbBG: #90A4AE;
+
+/*
   Some main Styling for every Page
 */
 * {
@@ -70,6 +76,25 @@ error{
   transform: translateX(-50%);
 }
 
+
+.customBar::-webkit-scrollbar {
+  width: 11px;
+  border-radius: 20px;
+}
+.customBar {
+  scrollbar-width: thin;
+  scrollbar-color: $thumbBG $scrollbarBG;
+}
+.customBar::-webkit-scrollbar-track {
+  background: $scrollbarBG;
+  border-radius: 50px;
+}
+.customBar::-webkit-scrollbar-thumb {
+  background-color: $thumbBG;
+  border-radius: 6px;
+  border: 3px solid $scrollbarBG;
+}
+
 /*
     Including other scss files to be shown here when getting compiled to css
 */
@@ -77,3 +102,4 @@ error{
 @import "./parts/_header";
 @import "./parts/_login";
 @import "./parts/_animations";
+@import "./parts/_account";

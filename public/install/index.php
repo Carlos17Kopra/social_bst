@@ -22,13 +22,7 @@ if(isset($_POST['InstallSubmit'])){
     User::create(
         "Admin",
         "Admin",
-        "admin@bst.de",
-        "00.00.0000",
-        "../data/pics/default.png",
-        "Ich bin der erste Account hier!",
-        "NONE",
-        "0",
-        "NONE"
+        "admin@bst.de"
     );
     //unlink("index.php");
 

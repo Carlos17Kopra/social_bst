@@ -41,7 +41,6 @@ class SQLConnection
             for ($index = 0; $index < sizeof($params); $index++) {
 
                 //Parameter werden eingesetzt
-                print_r($params[$index]);
                 $prep->bindParam($index + 1, $params[$index]);
             }
 

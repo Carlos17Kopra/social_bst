@@ -1,0 +1,117 @@
+.AccountManager{
+
+  @media ($bp-extra-large-devices) {
+    width: 500px;
+  }
+
+  .actions{
+
+    form{
+      position: relative;
+      margin: 30px 0;
+      width: 1200px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      input{
+        width: 20%;
+        font-size: 16px;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        cursor: pointer;
+
+        &:hover{
+          text-decoration: underline;
+        }
+        &:nth-child(2){
+          border-left: 1px solid black;
+          border-right: 1px solid black;
+        }
+      }
+    }
+
+  }
+
+  .ProfileImage{
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 50%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    img{
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      left: 0;
+      top: 0;
+    }
+  }
+  .userName{
+    p{
+      text-align: center;
+      font-size: 15px;
+      margin: 5px;
+      &:nth-child(1){
+        font-weight: bold;
+        font-size: 25px;
+        margin: 10px;
+      }
+    }
+  }
+  .registerDate{
+    display: block;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .UserInfos{
+    width: 1200px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @media ($bp-extra-large-devices) {
+      width: 900px;
+    }
+    
+    .underNav{
+      position: relative;
+      left: 0;
+      border-top: 1px solid black;
+      margin-bottom: 20px;
+
+      ul{
+        display: flex;
+        list-style: none;
+
+        li{
+          padding: 10px;
+          border: 1px solid #333;
+          border-top: none;
+          width: 25%;
+          text-align: center;
+          cursor: pointer;
+          transition: .2s;
+          &:hover{
+            background-color: #d9d9d9;
+          }
+        }
+
+      }
+
+    }
+    .underContent{
+      max-height: 1000px;
+      overflow-y: scroll;
+    }
+  }
+
+
+}

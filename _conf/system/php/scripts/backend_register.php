@@ -22,8 +22,7 @@ if(isset($_POST['registerSubmit'])){
 
                                     $registerTask = User::create($name, $password, $mail, $birth);
                                     if($registerTask){
-                                        echo "<info>Dein Account wurde erfolgreich erstellt!</info>";
-                                        echo "<info>Du kannst dich <a href='login.php'>hier</a> Anmelden.</info>";
+                                        echo "<script>window.location.replace('login.php');</script>";
                                     }
 
                                 }else{

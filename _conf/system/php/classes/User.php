@@ -14,6 +14,9 @@ class User extends A_Model
     private $userClass; // z.B FIN/ISE 01 für die vertretung bzw Stundenpläne
     private $userRankID;
     private $userFriends;
+    private $userRegisterDate;
+    private $userFollows;
+    private $userFollower;
 
     public function __construct($id)
     {
@@ -30,6 +33,9 @@ class User extends A_Model
             $this->userClass = $row['userClass'];
             $this->userRankID = $row['userRankID'];
             $this->userFriends = $row['userFriends'];
+            $this->userRegisterDate = $row['userRegisterDate'];
+            $this->userFollower = $row['userFollower'];
+            $this->userFollows = $row['userFollows'];
 
         }
     }
@@ -48,21 +54,26 @@ class User extends A_Model
                 ["userStatus", "TEXT", "NOT NULL"],
                 ["userClass", "VARCHAR(200)", "NOT NULL"], // noch unklar
                 ["userRankID", "INT(11)", "NOT NULL"],
-                ["userFriends", "LONGTEXT", "NOT NULL"] // noch unklar
+                ["userFriends", "LONGTEXT", "NOT NULL"], // noch unklar
+                ["userFollower", "LONGTEXT", "NOT NULL"], //noch unklar
+                ["userFollows", "LONGTEXT", "NOT NULL"],
+                ["userRegisterDate", "VARCHAR(200)", "NOT NULL"]
             ]
         );
     }
 
     //beim Registrieren verwendete Mehtode
-    static function create($userName = "",$userPassword = "", $userEmail = "", $userAge = "", $userProfilePicture = "../../_conf/system/data/user/profilepictures/demo.jpg", $userStatus = "Hallo, ich habe hier einen Account!", $userClass = "", $userRankID = 0, $userFriends = "[]"){
+    static function create($userName = "",$userPassword = "", $userEmail = "", $userAge = "", $userProfilePicture = "../_conf/system/data/user/profilepictures/demo.png", $userStatus = "Hallo, ich habe hier einen Account!", $userClass = "", $userRankID = 0){
+
+        $date = date("d.m.Y");
 
         //ist der Name schon vergeben? (Sicherheitsabfrage -> Errorhandling in dem RegisterScreen)
         if(!User::existsFromName($userName)){
 
             //SQLStatement und values vorbereiten
-            $sql = "INSERT INTO `user` (userName, userPassword, userEmail, userAge, userProfilePicture, userStatus, userClass, userRankID, userFriends)
-                                VALUES(?,?,?,?,?,?,?,?,?)";
-            $vals = [$userName, PasswordHash::hashPassword($userPassword), $userEmail, $userAge, $userProfilePicture, $userStatus, $userClass, $userRankID, $userFriends];
+            $sql = "INSERT INTO `user` (userName, userPassword, userEmail, userAge, userProfilePicture, userStatus, userClass, userRankID, userFriends, userRegisterDate, userFollower, userFollows)
+                                VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+            $vals = [$userName, PasswordHash::hashPassword($userPassword), $userEmail, $userAge, $userProfilePicture, $userStatus, $userClass, $userRankID, "", $date, "", ""];
             return Config::getConfig()->getConnection()->prepareStatement($sql, $vals);
 
         }else{
@@ -180,7 +191,7 @@ class User extends A_Model
      */
     public function getUserFriends()
     {
-        return $this->userFriends;
+        return explode(";",$this->userFriends);
     }
 
     /**
@@ -257,8 +268,18 @@ class User extends A_Model
     public function addFriend(User $friend)
     {
         //FriendArray pushen und updaten
-        array_push($this->userFriends, $friend->getUserID());
+        $this->userFriends.=";".$friend->getUserID();
         Config::getConfig()->getConnection()->prepareStatement("UPDATE `user` SET friends=? WHERE userID=?", [$this->userFriends, $this->userID]);
+    }
+    public function isFriend(User $friend){
+        $friends = $this->getUserFriends();
+        return in_array($friend->getUserID(), $friends);
+    }
+    public function removeFriend(User $friend){
+        if($this->isFriend($friend)){
+            $this->userFriends = str_replace(";".$friend->getUserID(), "", $this->userFriends);
+            Config::getConfig()->getConnection()->prepareStatement("UPDATE `user` SET friends=? WHERE userID=?", [$this->userFriends, $this->userID]);
+        }
     }
 
     /**
@@ -359,6 +380,58 @@ class User extends A_Model
      */
     public function isUserPassword($givenPW){
         return PasswordHash::checkPassword($givenPW, $this);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserRegisterDate()
+    {
+        return $this->userRegisterDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserFollower()
+    {
+        return explode(";",$this->userFollower);
+    }
+    public function isUserFollower(User $follower){
+        $followers = $this->getUserFollower();
+        return in_array($follower->getUserID(), $followers);
+    }
+    public function addUserFollower(User $follower){
+        if(!$this->isUserFollower($follower)){
+            $this->userFollower = $this->userFollower.=";".$follower->getUserID();
+        }
+    }
+    public function removeUserFollower(User $follower){
+        if($this->isUserFollower($follower)){
+            $this->userFollower = str_replace(";".$follower->getUserID(), "", $this->userFollower);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserFollows()
+    {
+        return explode(";",$this->userFollows);
+    }
+    public function isUserFollow(User $follow){
+        $follows = $this->getUserFollows();
+        return in_array($follow->getUserID(), $follows);
+    }
+    public function addUserFollow(User $newFollow){
+        if(!$this->isUserFollow($newFollow)){
+            $this->userFollows = $this->userFollows.=";".$newFollow->getUserID();
+        }
+    }
+    public function removeUserFollow(User $newFollow){
+        if($this->isUserFollow($newFollow)){
+            $this->userFollows = str_replace(";".$newFollow->getUserID(), "", $this->userFollows);
+        }
     }
 
 }
