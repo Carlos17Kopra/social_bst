@@ -84,7 +84,6 @@
     .underNav{
       position: relative;
       left: 0;
-      border-top: 1px solid black;
       margin-bottom: 20px;
 
       ul{
@@ -94,7 +93,6 @@
         li{
           padding: 10px;
           border: 1px solid #333;
-          border-top: none;
           width: 25%;
           text-align: center;
           cursor: pointer;
