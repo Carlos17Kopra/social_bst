@@ -16,6 +16,11 @@ class HashTag extends A_Model
         }
     }
 
+    public function isPostHashTag(Post $post){
+        $hashTags = $post->getPostHashtags();
+        return in_array($hashTags, $this->getHashTagID());
+    }
+
     /**
      * @return mixed
      */

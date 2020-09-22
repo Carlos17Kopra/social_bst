@@ -130,7 +130,7 @@ class Post extends A_Model
      */
     public function getPostHashtags()
     {
-        return $this->postHashtags;
+        return explode(";", $this->postHashtags);
     }
 
     /**
