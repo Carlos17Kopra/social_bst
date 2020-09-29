@@ -7,5 +7,6 @@ abstract class A_Model
     abstract static function create();
     abstract static function delete();
     abstract static function init();
+    abstract static function all();
 
 }

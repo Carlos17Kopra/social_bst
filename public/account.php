@@ -1,13 +1,12 @@
 <?php
 
     require "templates/header.php";
-    if(!isset($_SESSION[Config::session_id])){
+    if(!isset($_SESSION[session_id])){
         echo "<script>window.location.replace('login.php');</script>";
     }
-    $user = new User($_SESSION[Config::session_id]);
+    $user = new User($_SESSION[session_id]);
 
 ?>
-<script src="../_conf/system/js/scripts/underNav.js" defer></script>
 <main>
     <h1>Account</h1>
     <hr>
@@ -30,7 +29,7 @@
                 <input type="submit" name="delAccount" value="Account löschen">
             </form>
         </div>
-        <div class="UserInfos">
+        <div class="Overview-UserInfos" id="userInfos">
 
             <div class="underNav">
                 <ul>
@@ -40,7 +39,14 @@
                     <li id="user_friends">Freunde</li>
                 </ul>
             </div>
-            <div class="underContent customBar" id="underContent"></div>
+            <div class="underContent customBar" id="underContent">
+                <div class="underWrapper" id="underWrapper">
+                    <div class="underContentSection" id="posts"></div>
+                    <div class="underContentSection inherit-user-data" id="follower"></div>
+                    <div class="underContentSection inherit-user-data" id="follows"></div>
+                    <div class="underContentSection inherit-user-data" id="friends"></div>
+                </div>
+            </div>
 
         </div>
 
@@ -54,4 +60,5 @@
     ?>
 
 </main>
+<script src="../_conf/system/js/scripts/underNav.js"></script>
 <?php require "templates/footer.php"; ?>

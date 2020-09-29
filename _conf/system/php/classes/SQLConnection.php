@@ -33,7 +33,7 @@ class SQLConnection
             for ($index = 0; $index < sizeof($params); $index++) {
 
                 //Parameter werden von Tags gefiltert
-                $params[$index] = strip_tags($params[$index], Config::allowedTags);
+                $params[$index] = strip_tags($params[$index], allowedTags);
 
             }
 

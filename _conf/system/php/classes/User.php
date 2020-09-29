@@ -1,6 +1,6 @@
 <?php
 
-require "Models/A_Model.php";
+require_once("Models/A_Model.php");
 class User extends A_Model
 {
 
@@ -16,7 +16,6 @@ class User extends A_Model
     private $userFriends;
     private $userRegisterDate;
     private $userFollows;
-    private $userFollower;
 
     public function __construct($id)
     {
@@ -34,7 +33,6 @@ class User extends A_Model
             $this->userRankID = $row['userRankID'];
             $this->userFriends = $row['userFriends'];
             $this->userRegisterDate = $row['userRegisterDate'];
-            $this->userFollower = $row['userFollower'];
             $this->userFollows = $row['userFollows'];
 
         }
@@ -42,7 +40,7 @@ class User extends A_Model
 
     //Tabellen erstellen
     public static function init(){
-        Config::getConfig()->getConnection()->createTable(
+        return Config::getConfig()->getConnection()->createTable(
             "user",
             [
                 ["userID", "INT(11)", "AUTO_INCREMENT", "PRIMARY KEY", "NOT NULL"],
@@ -55,7 +53,6 @@ class User extends A_Model
                 ["userClass", "VARCHAR(200)", "NOT NULL"], // noch unklar
                 ["userRankID", "INT(11)", "NOT NULL"],
                 ["userFriends", "LONGTEXT", "NOT NULL"], // noch unklar
-                ["userFollower", "LONGTEXT", "NOT NULL"], //noch unklar
                 ["userFollows", "LONGTEXT", "NOT NULL"],
                 ["userRegisterDate", "VARCHAR(200)", "NOT NULL"]
             ]
@@ -71,9 +68,9 @@ class User extends A_Model
         if(!User::existsFromName($userName)){
 
             //SQLStatement und values vorbereiten
-            $sql = "INSERT INTO `user` (userName, userPassword, userEmail, userAge, userProfilePicture, userStatus, userClass, userRankID, userFriends, userRegisterDate, userFollower, userFollows)
-                                VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
-            $vals = [$userName, PasswordHash::hashPassword($userPassword), $userEmail, $userAge, $userProfilePicture, $userStatus, $userClass, $userRankID, "", $date, "", ""];
+            $sql = "INSERT INTO `user` (userName, userPassword, userEmail, userAge, userProfilePicture, userStatus, userClass, userRankID, userFriends, userRegisterDate, userFollows)
+                                VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+            $vals = [$userName, PasswordHash::hashPassword($userPassword), $userEmail, $userAge, $userProfilePicture, $userStatus, $userClass, $userRankID, "", $date, ""];
             return Config::getConfig()->getConnection()->prepareStatement($sql, $vals);
 
         }else{
@@ -128,7 +125,7 @@ class User extends A_Model
     }
 
     //Alle User getten
-    static function getAll(){
+    static function all(){
 
         //UserArray, welches returned wird
         $ret = [];
@@ -146,7 +143,7 @@ class User extends A_Model
 
     //Abfrage onb der User anhand des Namens schon existiert
     static function existsFromName($name){
-        $users = User::getAll();
+        $users = User::all();
         foreach ($users as $user){
             if($user->getUserName() === $name){
                 return true;
@@ -156,7 +153,7 @@ class User extends A_Model
     }
     //Abfrage onb der User anhand der Email schon existiert
     static function existsFromEmail($mail){
-        $users = User::getAll();
+        $users = User::all();
         foreach ($users as $user){
             if($user->getUserEmail() === $mail){
                 return true;
@@ -166,9 +163,10 @@ class User extends A_Model
     }
     //Abfrage ob der User anhand der ID schon existiert
     static function existsFromID($id){
-        $users = User::getAll();
+        $users = User::all();
         foreach ($users as $user){
-            if($user->getUserID() === $id){
+            if($user->getUserID() == $id){
+
                 return true;
             }
         }
@@ -191,7 +189,19 @@ class User extends A_Model
      */
     public function getUserFriends()
     {
-        return explode(";",$this->userFriends);
+        $array = explode(";", $this->userFriends);
+        $ret = [];
+        foreach ($array as $u){
+
+            if(User::existsFromID($u)){
+                $add = new User($u);
+                array_push($ret, $add);
+            }
+        }
+        return $ret;
+    }
+    public function getUserFriendsCount(){
+        return sizeof($this->getUserFriends());
     }
 
     /**
@@ -393,45 +403,109 @@ class User extends A_Model
     /**
      * @return mixed
      */
-    public function getUserFollower()
-    {
-        return explode(";",$this->userFollower);
-    }
-    public function isUserFollower(User $follower){
-        $followers = $this->getUserFollower();
-        return in_array($follower->getUserID(), $followers);
-    }
-    public function addUserFollower(User $follower){
-        if(!$this->isUserFollower($follower)){
-            $this->userFollower = $this->userFollower.=";".$follower->getUserID();
-        }
-    }
-    public function removeUserFollower(User $follower){
-        if($this->isUserFollower($follower)){
-            $this->userFollower = str_replace(";".$follower->getUserID(), "", $this->userFollower);
-        }
-    }
-
-    /**
-     * @return mixed
-     */
     public function getUserFollows()
     {
-        return explode(";",$this->userFollows);
+        $array = explode(";",$this->userFollows);
+        $ret = [];
+        foreach ($array as $u){
+            if(User::existsFromID($u)){
+                array_push($ret, new User($u));
+            }
+        }
+        return $ret;
     }
-    public function isUserFollow(User $follow){
+    public function isUserFollowing(User $follow){
         $follows = $this->getUserFollows();
-        return in_array($follow->getUserID(), $follows);
+        foreach ($follows as $_follow) {
+            if($_follow->getUserID() === $follow->getUserID()){
+                return true;
+            }
+        }
+        return false;
     }
     public function addUserFollow(User $newFollow){
-        if(!$this->isUserFollow($newFollow)){
+        if(!$this->isUserFollowing($newFollow)){
             $this->userFollows = $this->userFollows.=";".$newFollow->getUserID();
         }
     }
     public function removeUserFollow(User $newFollow){
-        if($this->isUserFollow($newFollow)){
+        if($this->isUserFollowing($newFollow)){
             $this->userFollows = str_replace(";".$newFollow->getUserID(), "", $this->userFollows);
         }
+    }
+    public function getUserFollowingCount(){
+        return sizeof($this->getUserFollows());
+    }
+
+    public function getUserRankObj(){
+        $ranks = Rank::all();
+        foreach ($ranks as $rank){
+            if($rank->hasUser($this)){
+                return $rank;
+            }
+        }
+        return new Rank(0);
+    }
+
+    public function getUserFollower(){
+        $users = User::all();
+        $ret = [];
+        foreach ($users as $user){
+            if($user->isUserFollowing($this)){
+                array_push($ret, $user);
+            }
+        }
+        return $ret;
+    }
+    public function getUserFollowerCount(){
+        return sizeof($this->getUserFollower());
+    }
+
+    public function render(){
+
+        $renderID = uniqid(md5(uniqid()));
+
+        $html="<div class='profile' data-tooltip-id='".$renderID."' data-id='".$this->getUserID()."'>";
+            $html.="<div class='profile-image'>";
+                $html.="<div class='profile-image-image' data-src='".$this->getUserProfilePicture()."'></div>";
+            $html.="</div>";
+            $html.="<div class='username'>";
+                $html.="<p class='name'>".$this->getUserName()."</p>";
+                $html.="<p class='tag'>".$this->getUserName()."#".$this->getUserID()."</p>";
+            $html.="</div>";
+            $rankName = $this->getUserRankObj()->getName();
+            $rankColor = $this->getUserRankObj()->getColor();
+            $html.="<div class='rank' style='background-color: ".$rankColor."'>";
+
+                $html.="<p>".$rankName."</p>";
+
+            $html.="</div>";
+
+            $html.="<div class='info' id='".$renderID."'>";
+                $html.="<div class='row row1'>";
+                    $html.="<div class='profile-image'>";
+                        $html.="<div class='profile-image-image' data-src='".$this->getUserProfilePicture()."'></div>";
+                    $html.="</div>";
+
+                    $html.="<div class='username'>";
+                        $html.="<p class='name'>".$this->getUserName()."</p>";
+                        $html.="<p class='tag'>".$this->getUserName()."#".$this->getUserID()."</p>";
+                        $html.="<p class='date'><i class='fas fa-calendar-alt'></i> ".$this->getUserRegisterDate()."</p>";
+                    $html.="</div>";
+
+                $html.="</div>";
+                $html.="<div class='row row2'>";
+                    $html.="<div class='user-info'>";
+                        $html.="<span>Status: <br> <span>".nl2br($this->getUserStatus())."</span></span>";
+                        $html.="<span>Freunde: <br> <span>".$this->getUserFriendsCount()."</span></span>";
+                        $html.="<span>Follower: <br> <span>".$this->getUserFollowerCount()."</span></span>";
+                    $html.="</div>";
+                $html.="</div>";
+            $html.="</div>";
+
+        $html.="</div>";
+        return $html;
+
     }
 
 }

@@ -28,7 +28,7 @@ require "../_conf/config.php";
 <li><a href="index.php">Home</a></li>
 <li><a href="#">Posts</a></li>
           <?php
-            if(isset($_SESSION[Config::session_id])){
+            if(isset($_SESSION[session_id])){
                 echo "<li><a href='account.php'>Account</a></li>";
             }else{
                 echo "<li><a href='login.php'>Account</a></li>";

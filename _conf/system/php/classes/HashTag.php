@@ -53,7 +53,7 @@ class HashTag extends A_Model
         $this->hashTagTitle = $hashTagTitle;
     }
 
-    static function getAll(){
+    static function all(){
         $ret = [];
         $res = Config::getConfig()->getConnection()->getSQLData("SELECT * FROM hashTag");
 
@@ -66,7 +66,7 @@ class HashTag extends A_Model
     }
 
     static function existsByTitle($title){
-        $hashTags = self::getAll();
+        $hashTags = self::all();
         foreach ($hashTags as $hashTag){
             if($hashTag->getHashTagTitle() === $hashTag){
                 return true;
@@ -93,7 +93,7 @@ class HashTag extends A_Model
 
     static function init()
     {
-        Config::getConfig()->getConnection()->createTable("hashTag",[
+       return Config::getConfig()->getConnection()->createTable("hashTag",[
             ["hashTagID", "INT(11)", "AUTO_INCREMENT", "PRIMARY KEY", "NOT NULL"],
             ["hashTagTitle", "TEXT", "NOT NULL"]
         ]);

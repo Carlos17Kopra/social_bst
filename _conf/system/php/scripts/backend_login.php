@@ -43,7 +43,7 @@ if(isset($_POST['loginSubmit'])){
 function login(User $user, $pw){
 
     if($user->isUserPassword($pw)){
-        $_SESSION[Config::session_id] = $user->getUserID();
+        $_SESSION[session_id] = $user->getUserID();
         echo "<script>window.location.replace('account.php');</script>";
     }else{
         echo "<error>Deine Daten sind nicht korrekt!</error>";

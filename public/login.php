@@ -7,7 +7,7 @@ require "templates/header.php";
     <h1>Login</h1>
     <hr>
     <?php require "../_conf/system/php/scripts/backend_login.php";
-        if(!isset($_SESSION[Config::session_id])) {
+        if(!isset($_SESSION[session_id])) {
             echo '
             <div class="login-wrapper slide-up">
         

@@ -1,10 +1,10 @@
 <?php
 require "../../_conf/config.php";
-    if(!isset($_SESSION[Config::session_id])){
+    if(!isset($_SESSION[session_id])){
         echo "<script>window.location.replace('../login.php');</script>";
     }
 
-    $user = new User($_SESSION[Config::session_id]);
+    $user = new User($_SESSION[session_id]);
 
     $tables = Config::getConfig()->getConnection()->getSQLData("SHOW TABLES");
 

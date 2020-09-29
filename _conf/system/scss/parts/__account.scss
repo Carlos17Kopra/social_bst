@@ -71,7 +71,8 @@
     transform: translateX(-50%);
   }
 
-  .UserInfos{
+  .Overview-UserInfos{
+
     width: 1200px;
     position: relative;
     left: 50%;
@@ -108,6 +109,29 @@
     .underContent{
       max-height: 1000px;
       overflow-y: scroll;
+      overflow-x: hidden;
+      position: relative;
+      .underWrapper{
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        transition: .2s;
+        .underContentSection{
+          transition: .2s;
+          width: 100%;
+          flex: 0 0 100%;
+          &.inherit-user-data{
+            .profile{
+              position: relative;
+              left: 50%;
+              transform: translateX(-50%);
+            }
+            h2{
+              margin-bottom: 50px;
+            }
+          }
+        }
+      }
     }
   }
 

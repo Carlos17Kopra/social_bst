@@ -25,19 +25,15 @@ function autoload($classname) {
         }
     }
 }
-
+require "Data.php";
 class Config{
-
-    const allowedTags = "";
-
-    const session_id = "qQ95C1DwXn5gOOY";
 
     const sql = [
         "host" => "localhost",
         "port" => "3306",
         "user" => "root",
         "passwd" => "",
-        "database" => "socialbst"
+        "database" => "bst"
     ];
 
     static function getConfig(){
